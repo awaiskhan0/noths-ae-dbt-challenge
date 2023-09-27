@@ -37,5 +37,3 @@ models:
       +schema: staging
     marts:
       +schema: marts
-    analyses:
-      +schema: analyses
