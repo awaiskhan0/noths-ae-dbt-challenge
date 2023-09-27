@@ -6,9 +6,19 @@ models:
     columns:
       - name: id
         description: Unique identifier for the category
+        tests:
+          - unique
+          - not_null
       - name: created_at
         description: Date of category creation
+        tests:
+          - not_null
       - name: updated_at
         description: Date of last update for the category
+        tests:
+          - not_null
       - name: name
         description: Name of the category
+        tests:
+          - unique
+          - not_null
