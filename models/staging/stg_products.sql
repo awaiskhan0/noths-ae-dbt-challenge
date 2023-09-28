@@ -1,19 +1,15 @@
 {{
   config (
-      materialized='table',
       unique_key='id',
       cluster_by=['created_at']
       )
 }}
 
 with source as (
-
   select * from {{ ref('products') }}
-
 ),
 
 renamed as (
-
   select
     id,
     created_at,
@@ -27,7 +23,6 @@ renamed as (
     category_id
 
   from source
-
 )
 
 select * from renamed
