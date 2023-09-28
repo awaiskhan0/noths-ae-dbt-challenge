@@ -25,7 +25,7 @@ final as (
         orders.order_status,
         orders.payment_method,
         orders.customer_id,
-        full_name as customer_full_name,
+        customers.full_name as customer_full_name,
         refunds.id as refund_id,
         refunds.created_at as refund_created_at,
         refunds.amount_refunded
@@ -39,18 +39,15 @@ final as (
 
 select
     order_id,
-    customer_id,
-    refund_id,
-
     order_created_at,
     order_updated_at,
-    refund_created_at,
-
+    customer_id,
+    customer_full_name,
     order_total,
-    amount_refunded,
-    
     payment_method,
     order_status,
-    customer_full_name
+    refund_id,
+    refund_created_at,
+    amount_refunded
 
 from final
