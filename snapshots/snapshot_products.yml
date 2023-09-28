@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: snapshot_products
+    description: >
+      Snapshot table for products to keep track of changes to on_sale
+    columns:
+      - name: id
+        description: Unique identifier for the product
+        tests:
+          - unique
+          - not_null
+      - name: created_at
+        description: Date of product creation
+        tests:
+          - not_null
+      - name: updated_at
+        description: Date of last update for the product
+        tests:
+          - not_null
+      - name: on_sale
+        description: Whether the product is on sale (True or False)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['true', 'false']
+              quote: false

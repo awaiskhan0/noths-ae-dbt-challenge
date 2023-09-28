@@ -1,19 +1,19 @@
 version: 2
 
 models:
-  - name: stg_orders
-    description: Staging source for orders data
+  - name: fct_orders
+    description: '{{ doc("fct_orders") }}'
     columns:
-      - name: id
+      - name: order_id
         description: Unique identifier for the order
         tests:
           - unique
           - not_null
-      - name: created_at
+      - name: order_created_at
         description: Date of order creation
         tests:
           - not_null
-      - name: updated_at
+      - name: order_updated_at
         description: Date of last update for the order
         tests:
           - not_null
@@ -24,6 +24,10 @@ models:
           - relationships:
               to: ref('stg_customers')
               field: id
+      - name: customer_full_name
+        description: First and last name of the customer who made the order
+        tests:
+          - not_null
       - name: order_total
         description: Total amount of the order
         tests:
@@ -40,3 +44,16 @@ models:
           - not_null
           - accepted_values:
               values: ['pending', 'accepted', 'rejected', 'delivered', 'refunded']
+      - name: refund_id
+        description: Refund ID associated with the order
+        tests:
+          - relationships:
+              to: ref('stg_refunds')
+              field: id
+      - name: refund_created_at
+        description: Date of refund creation
+      - name: amount_refunded
+        description: Amount refunded for the order
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "> 0 or null"

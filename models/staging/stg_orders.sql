@@ -1,6 +1,5 @@
 {{
   config (
-      materialized='table',
       unique_key='id',
       cluster_by=['created_at']
       )
@@ -8,13 +7,10 @@
 
 
 with source as (
-
   select * from {{ ref('orders') }}
-
 ),
 
 renamed as (
-
   select
     id,
     created_at,
@@ -25,7 +21,6 @@ renamed as (
     order_status
 
   from source
-
 )
 
 select * from renamed

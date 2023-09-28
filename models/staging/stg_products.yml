@@ -6,21 +6,53 @@ models:
     columns:
       - name: id
         description: Unique identifier for the product
+        tests:
+          - unique
+          - not_null
       - name: created_at
         description: Date of product creation
+        tests:
+          - not_null
       - name: updated_at
         description: Date of last update for the product
+        tests:
+          - not_null
       - name: name
         description: Name of the product
+        tests:
+          - not_null
       - name: description
         description: Description of the product
       - name: price
         description: Regular price of the product
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
       - name: sale_price
         description: Sale price of the product
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
       - name: in_stock
         description: Availability of the product (True or False)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['true', 'false']
+              quote: false
       - name: on_sale
         description: Whether the product is on sale (True or False)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['true', 'false']
+              quote: false
       - name: category_id
         description: Category ID to link the product to its category
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_categories')
+              field: id

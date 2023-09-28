@@ -1,6 +1,5 @@
 {{
   config (
-      materialized='ephemeral',
       unique_key='id',
       )
 }}
@@ -10,4 +9,5 @@ select
     created_at,
     updated_at,
     name
+
 from {{ ref('categories') }}

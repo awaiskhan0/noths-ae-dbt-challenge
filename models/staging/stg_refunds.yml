@@ -6,13 +6,29 @@ models:
     columns:
       - name: id
         description: Unique identifier for the refund
+        tests:
+          - unique
+          - not_null
       - name: created_at
         description: Date of refund creation
+        tests:
+          - not_null
       - name: updated_at
         description: Date of last update for the refund
+        tests:
+          - not_null
       - name: order_id
         description: Order ID associated with the refund
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: id
       - name: amount_refunded
         description: Amount refunded for the order
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
       - name: refund_reason
         description: Reason for the refund

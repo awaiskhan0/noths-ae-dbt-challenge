@@ -18,6 +18,7 @@ test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
+docs-paths: ["docs"]
 
 clean-targets:         # directories to be removed by `dbt clean`
   - "target"
@@ -33,5 +34,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   noths_ae_take_home_task:
     # Config indicated by + and applies to all files under models/example/
-    example:
-      +materialized: view
+    staging:
+      +schema: staging
+    marts:
+      +schema: marts
