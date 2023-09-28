@@ -6,15 +6,37 @@ models:
     columns:
       - name: id
         description: Unique identifier for the order
+        tests:
+          - unique
+          - not_null
       - name: created_at
         description: Date of order creation
+        tests:
+          - not_null
       - name: updated_at
         description: Date of last update for the order
+        tests:
+          - not_null
       - name: customer_id
         description: Customer ID associated with the order
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: id
       - name: order_total
         description: Total amount of the order
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
       - name: payment_method
         description: Payment method used for the order
+        tests:
+          - not_null
       - name: order_status
         description: Status of the order ('pending', 'accepted', 'rejected', 'delivered', 'refunded')
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['pending', 'accepted', 'rejected', 'delivered', 'refunded']
