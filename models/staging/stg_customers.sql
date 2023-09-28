@@ -1,6 +1,5 @@
 {{
   config (
-      materialized='view',
       unique_key='id',
       )
 }}
