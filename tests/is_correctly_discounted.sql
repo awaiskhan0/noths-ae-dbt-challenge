@@ -12,6 +12,7 @@
 -- since we are using dummy data (in particular, using fake timestamps), the test
 -- won't provide accurate results
 
+
 select
     orders.order_id,
     orders.order_total,

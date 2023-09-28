@@ -22,8 +22,5 @@ inner join {{ ref('snapshot_customers') }} as snapshot_customers
 
 where emails.sent_date >= snapshot_customers.updated_at
 
-qualify row_number() over (
-    partition by email_id
-    order by updated_at desc
-) = 1
+qualify row_number() over (partition by email_id order by updated_at desc) = 1
     and email_marketing_status = 'opted_out'
