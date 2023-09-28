@@ -1,15 +1,15 @@
 {{
   config (
-      materialized='table',
       unique_key='id',
       )
 }}
 
-SELECT
+select
     id,
     created_at,
     updated_at,
     order_id,
     product_id,
     quantity
-FROM {{ ref('order_items') }}
+
+from {{ ref('order_items') }}
