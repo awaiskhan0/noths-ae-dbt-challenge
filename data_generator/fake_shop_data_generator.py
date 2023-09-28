@@ -139,7 +139,10 @@ def generate_orders_and_items(num_orders, customers, products):
             product = random.choice(products)
             product_id = product['id']
             quantity = random.randint(1, 10)
-            item_total = product['price'] * quantity
+            if product['on_sale']:
+                item_total = product['sale_price'] * quantity
+            else:
+                item_total = product['price'] * quantity
             order_total += item_total
             order_items.append({
                 'id': len(order_items) + 1,
