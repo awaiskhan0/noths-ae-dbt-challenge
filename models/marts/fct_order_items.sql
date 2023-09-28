@@ -20,6 +20,23 @@ snapshot_products as (
     select * from {{ ref('snapshot_products') }}
 ),
 
+order_item_on_sale as (
+    select
+        order_items.id as order_item_id,
+        snapshot_products.on_sale
+    
+    from order_items
+    left join snapshot_products
+        on order_items.product_id = snapshot_products.id
+    
+    where order_items.created_at >= snapshot_products.updated_at
+
+    qualify row_number() over (
+        partition by order_item_id
+        order by snapshot_products.updated_at desc
+    ) = 1
+),
+
 final as (
     select
         order_items.id as order_item_id,
@@ -29,11 +46,11 @@ final as (
         order_items.product_id,
         order_items.quantity,
         order_items.quantity * iff(
-            snapshot_products.on_sale, 
+            order_item_on_sale.on_sale, 
             products.sale_price,
             products.price
         ) as order_item_total,
-        snapshot_products.on_sale,
+        order_item_on_sale.on_sale,
         products.name as product_name,
         categories.id as category_id,
         categories.name as category_name
@@ -43,15 +60,8 @@ final as (
         on order_items.product_id = products.id
     left join categories
         on products.category_id = categories.id
-    left join snapshot_products
-        on order_items.product_id = snapshot_products.id
-    
-    where order_items.created_at >= snapshot_products.dbt_updated_at
-
-    qualify row_number() over (
-        partition by order_item_id
-        order by dbt_updated_at desc
-    ) = 1
+    left join order_item_on_sale
+        on order_items.id = order_item_on_sale.order_item_id
 )
 
 select
