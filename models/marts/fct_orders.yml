@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: '{{ doc("fct_orders") }}'
+    columns:
+      - name: order_id
+        description: Unique identifier for the order
+        tests:
+          - unique
+          - not_null
+      - name: order_created_at
+        description: Date of order creation
+        tests:
+          - not_null
+      - name: order_updated_at
+        description: Date of last update for the order
+        tests:
+          - not_null
+      - name: customer_id
+        description: Customer ID associated with the order
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: id
+      - name: customer_full_name
+        description: First and last name of the customer who made the order
+        tests:
+          - not_null
+      - name: order_total
+        description: Total amount of the order
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+      - name: payment_method
+        description: Payment method used for the order
+        tests:
+          - not_null
+      - name: order_status
+        description: Status of the order ('pending', 'accepted', 'rejected', 'delivered', 'refunded')
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['pending', 'accepted', 'rejected', 'delivered', 'refunded']
+      - name: refund_id
+        description: Refund ID associated with the order
+        tests:
+          - relationships:
+              to: ref('stg_refunds')
+              field: id
+      - name: refund_created_at
+        description: Date of refund creation
+      - name: amount_refunded
+        description: Amount refunded for the order
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "> 0 or null"
