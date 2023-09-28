@@ -6,21 +6,49 @@ models:
     columns:
       - name: id
         description: Unique identifier for the customer
+        tests:
+          - unique
+          - not_null
       - name: created_at
         description: Date of customer creation
+        tests:
+          - not_null
       - name: updated_at
         description: Date of last update for the customer
+        tests:
+          - not_null
+      - name: full_name
+        description: First and last name of the customer
+        tests:
+          - not_null
       - name: first_name
         description: First name of the customer
+        tests:
+          - not_null
       - name: last_name
         description: Last name of the customer
+        tests:
+          - not_null
       - name: email
         description: Email address of the customer
+        tests:
+          - unique
+          - not_null
       - name: address
         description: Address of the customer
+        tests:
+          - not_null
       - name: city
         description: City of the customer
+        tests:
+          - not_null
       - name: post_code
         description: Postal code of the customer
+        tests:
+          - not_null
       - name: email_marketing_status
         description: Email marketing status (opted_in or opted_out)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['opted_in', 'opted_out']
