@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: fct_emails
+    description: '{{ doc("fct_emails") }}'
+    columns:
+      - name: email_id
+        description: Unique identifier for the email
+        tests:
+          - unique
+          - not_null
+      - name: sent_date
+        description: Date when the email was sent
+        tests:
+          - not_null
+      - name: customer_id
+        description: Customer ID associated with the email
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: id
+      - name: customer_full_name
+        description: First and last name of the customer who received the email
+        tests:
+          - not_null
+      - name: last_sent_email_id
+        description: Email ID of last email sent to customer
+        tests:
+          - relationships:
+              to: ref('stg_emails')
+              field: id
+      - name: subject
+        description: Subject of the email
+      - name: opened
+        description: Whether the email was opened (True or False)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['true', 'false']
+              quote: false
+      - name: clicked
+        description: Whether the email was clicked (True or False)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['true', 'false']
+              quote: false
