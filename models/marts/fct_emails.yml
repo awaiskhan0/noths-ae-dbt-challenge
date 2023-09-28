@@ -24,6 +24,12 @@ models:
         description: First and last name of the customer who received the email
         tests:
           - not_null
+      - name: email_marketing_status
+        description: Email marketing status (opted_in or opted_out)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['opted_in', 'opted_out']
       - name: last_sent_email_id
         description: Email ID of last email sent to customer
         tests:
