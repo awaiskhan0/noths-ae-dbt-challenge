@@ -1,19 +1,15 @@
 {{
   config (
-      materialized='table',
       unique_key='id',
       cluster_by=['created_at']
       )
 }}
 
 with source as (
-
   select * from {{ ref('refunds') }}
-
 ),
 
 renamed as (
-
   select
     id,
     created_at,
@@ -23,7 +19,6 @@ renamed as (
     refund_reason
 
   from source
-
 )
 
 select * from renamed
