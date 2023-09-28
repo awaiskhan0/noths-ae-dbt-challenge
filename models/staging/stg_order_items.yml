@@ -6,13 +6,34 @@ models:
     columns:
       - name: id
         description: Unique identifier for the order item
+        tests:
+          - unique
+          - not_null
       - name: created_at
         description: Date of order item creation
+        tests:
+          - not_null
       - name: updated_at
         description: Date of last update for the order item
+        tests:
+          - not_null
       - name: order_id
         description: Order ID associated with the order item
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: id
       - name: product_id
         description: Product ID associated with the order item
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: id
       - name: quantity
         description: Quantity of the product in the order item
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
