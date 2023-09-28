@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: snapshot_customers
+    description: >
+      Snapshot table for customers to keep track of changes to email_marketing_status
+    columns:
+      - name: id
+        description: Unique identifier for the customer
+        tests:
+          - unique
+          - not_null
+      - name: created_at
+        description: Date of customer creation
+        tests:
+          - not_null
+      - name: updated_at
+        description: Date of last update for the customer
+        tests:
+          - not_null
+      - name: email_marketing_status
+        description: Email marketing status (opted_in or opted_out)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['opted_in', 'opted_out']
