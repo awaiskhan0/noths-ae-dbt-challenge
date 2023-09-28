@@ -1,6 +1,6 @@
 {{
   config (
-      unique_key='order_item_id',
+      unique_key='email_id',
       )
 }}
 
@@ -9,7 +9,6 @@ with emails as (
 ),
 
 customers as (
-
     select * from {{ ref('stg_customers') }}
 ),
 
@@ -22,9 +21,12 @@ final as (
         emails.subject,
         emails.opened,
         emails.clicked,
-        lag(emails.id, 1, 0) over (
-            partition by emails.customer_id
-            order by emails.sent_date asc
+        nullif(
+            lag(emails.id, 1, 0) over (
+                partition by emails.customer_id
+                order by emails.sent_date asc
+            ),
+            0
         ) as last_sent_email_id
     
     from emails
@@ -34,12 +36,10 @@ final as (
 
 select
     email_id,
-    last_sent_email_id,
-    customer_id,
-
     sent_date,
-
+    customer_id,
     customer_full_name,
+    last_sent_email_id,
     subject,
     opened,
     clicked
